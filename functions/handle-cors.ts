@@ -1,4 +1,4 @@
-import type { Handler } from "@netlify/functions";
+import { Handler } from "@netlify/functions";
 
 const countPerPage = 100;
 const pageNo = 1;
