@@ -19,7 +19,7 @@ const handler: Handler = async (event, _) => {
     };
   }
 
-  let messages = await (await fetch(
+  let messages: any = await (await fetch(
     `https://msg.ischool.com.tw/services/personal/messages?access_token=${event.queryStringParameters!.access_token}&count_per_page=${countPerPage}&page_no=${pageNo}`,
     {
       method: "GET"
@@ -47,6 +47,7 @@ const handler: Handler = async (event, _) => {
 
   return {
     statusCode: 200,
+    body: JSON.stringify({success: true}),
     headers: {
       'Access-Control-Allow-Origin': '*'
     }
