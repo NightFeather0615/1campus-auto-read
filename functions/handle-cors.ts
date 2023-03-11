@@ -22,7 +22,7 @@ const handler: Handler = async (event, _) => {
   let messages = await (await fetch(
     `https://msg.ischool.com.tw/services/personal/messages?access_token=${event.queryStringParameters!.access_token}&count_per_page=${countPerPage}&page_no=${pageNo}`,
     {
-        method: "GET"
+      method: "GET"
     }
   )).json();
 
@@ -33,14 +33,14 @@ const handler: Handler = async (event, _) => {
       await fetch(
         "https://msg.ischool.com.tw/services/personal/messages",
         {
-            method: "PUT",
-            body: `access_token=${event.queryStringParameters!.access_token}&message_id=${messageId}`,
-            headers: {
-                "Host": "msg.ischool.com.tw",
-                "User-Agent": "Dalvik/2.1.0 (Linux; U; Android 11; sdk_gphone_arm64 Build/RSR1.210722.002)",
-                "Origin": "https://msg.ischool.com.tw/",
-                "Content-Type": "application/x-www-form-urlencoded"
-            }
+          method: "PUT",
+          body: `access_token=${event.queryStringParameters!.access_token}&message_id=${messageId}`,
+          headers: {
+            "Host": "msg.ischool.com.tw",
+            "User-Agent": "Dalvik/2.1.0 (Linux; U; Android 11; sdk_gphone_arm64 Build/RSR1.210722.002)",
+            "Origin": "https://msg.ischool.com.tw/",
+            "Content-Type": "application/x-www-form-urlencoded"
+          }
         }
       )
     });
