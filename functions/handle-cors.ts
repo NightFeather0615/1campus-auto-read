@@ -1,4 +1,5 @@
 import { Handler } from "@netlify/functions";
+import fetch from "node-fetch";
 
 const countPerPage = 100;
 const pageNo = 1;
