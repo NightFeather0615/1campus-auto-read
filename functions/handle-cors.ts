@@ -6,6 +6,9 @@ const handler: Handler = async (event, _) => {
   ) {
     return {
       statusCode: 400,
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      },
       body: JSON.stringify({
         status: 400,
         code: "missing_parameters"
@@ -29,6 +32,7 @@ const handler: Handler = async (event, _) => {
   });
   return {
     statusCode: 200,
+    body: JSON.stringify({ success: true }),
     headers: {
       'Access-Control-Allow-Origin': '*'
     }
