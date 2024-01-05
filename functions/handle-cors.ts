@@ -24,18 +24,29 @@ const handler: Handler = async (event, _) => {
 
   let accessToken: string = event.queryStringParameters!.access_token;
 
-  let messages: any = await (await fetch(
-    `${apiUrl}/mobileTW/getMessages?access_token=${accessToken}&count_per_page=${countPerPage}&page_no=${pageNo}`,
-  )).json();
+  let messages: any = (
+    (
+      await (
+        await fetch(
+          `${apiUrl}/mobileTW/getMessages?access_token=${accessToken}&count_per_page=${countPerPage}&page_no=${pageNo}`,
+        )
+      ).json()
+    ) as any
+  ).filter(messageData => messageData.read_time === null);
 
   while (messages.length > 0) {
-    messages = await (await fetch(
-      `${apiUrl}/mobileTW/getMessages?access_token=${accessToken}&count_per_page=${countPerPage}&page_no=${pageNo}`,
-    )).json();
+    messages = (
+      (
+        await (
+          await fetch(
+            `${apiUrl}/mobileTW/getMessages?access_token=${accessToken}&count_per_page=${countPerPage}&page_no=${pageNo}`,
+          )
+        ).json()
+      ) as any
+    ).filter(messageData => messageData.read_time === null);
 
     messages
-      .filter(messageData => messageData.read_time === null)
-      .map(messageData => `receiver_id=${messageData.receiver_id}&notice_id=${messageData.meta.notice_id}`)
+      .map(messageData => `receiver_id=${messageData.receiver_id}&notice_id=${messageData.content.meta.notice_id}`)
       .forEach(async (messageQuery) => {
         await fetch(
           `${apiUrl}/mobileTW/readMessage?access_token=${accessToken}&${messageQuery}&dsns=tcivs.tc.edu.tw&student_id=undefined&role=student`,

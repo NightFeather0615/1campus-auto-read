@@ -1,3 +1,20 @@
 {
-	"siteId": "4fc5c18d-125d-4ca3-bb56-dd08940c23f0"
+	"siteId": "4fc5c18d-125d-4ca3-bb56-dd08940c23f0",
+	"geolocation": {
+		"data": {
+			"city": "Taichung",
+			"country": {
+				"code": "TW",
+				"name": "Taiwan"
+			},
+			"subdivision": {
+				"code": "TXG",
+				"name": "Taichung City"
+			},
+			"timezone": "Asia/Taipei",
+			"latitude": 24.144,
+			"longitude": 120.6844
+		},
+		"timestamp": 1704432611154
+	}
 }
