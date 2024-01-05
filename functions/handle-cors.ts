@@ -2,7 +2,9 @@ import { Handler } from "@netlify/functions";
 import fetch from "node-fetch";
 
 const countPerPage = 100;
-const pageNo = 1;
+let pageNo = 1;
+
+const apiUrl = "https://asia-east1-campus-cdddd.cloudfunctions.net";
 
 const handler: Handler = async (event, _) => {
   if (
@@ -20,31 +22,28 @@ const handler: Handler = async (event, _) => {
     };
   }
 
+  let accessToken: string = event.queryStringParameters!.access_token;
+
   let messages: any = await (await fetch(
-    `https://msg.ischool.com.tw/services/personal/messages?access_token=${event.queryStringParameters!.access_token}&count_per_page=${countPerPage}&page_no=${pageNo}`,
-    {
-      method: "GET"
-    }
+    `${apiUrl}/mobileTW/getMessages?access_token=${accessToken}&count_per_page=${countPerPage}&page_no=${pageNo}`,
   )).json();
 
-  messages
-    .filter(messageData => messageData.read_time == null)
-    .map(messageData => messageData.message_id)
-    .forEach(async (messageId) => {
-      await fetch(
-        "https://msg.ischool.com.tw/services/personal/messages",
-        {
-          method: "PUT",
-          body: `access_token=${event.queryStringParameters!.access_token}&message_id=${messageId}`,
-          headers: {
-            "Host": "msg.ischool.com.tw",
-            "User-Agent": "Dalvik/2.1.0 (Linux; U; Android 11; sdk_gphone_arm64 Build/RSR1.210722.002)",
-            "Origin": "https://msg.ischool.com.tw/",
-            "Content-Type": "application/x-www-form-urlencoded"
-          }
-        }
-      )
-    });
+  while (messages.length > 0) {
+    messages = await (await fetch(
+      `${apiUrl}/mobileTW/getMessages?access_token=${accessToken}&count_per_page=${countPerPage}&page_no=${pageNo}`,
+    )).json();
+
+    messages
+      .filter(messageData => messageData.read_time === null)
+      .map(messageData => `receiver_id=${messageData.receiver_id}&notice_id=${messageData.meta.notice_id}`)
+      .forEach(async (messageQuery) => {
+        await fetch(
+          `${apiUrl}/mobileTW/readMessage?access_token=${accessToken}&${messageQuery}&dsns=tcivs.tc.edu.tw&student_id=undefined&role=student`,
+        )
+      });
+    
+    pageNo += 1;
+  }
 
   return {
     statusCode: 200,
