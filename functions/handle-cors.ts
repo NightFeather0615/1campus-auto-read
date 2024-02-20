@@ -4,7 +4,7 @@ import fetch from "node-fetch";
 const countPerPage = 100;
 let pageNo = 1;
 
-const apiUrl = "https://campus-cdddd.cloudfunctions.net";
+const apiUrl = "https://asia-east1-campus-cdddd.cloudfunctions.net";
 
 const handler: Handler = async (event, _) => {
   if (
